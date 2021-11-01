@@ -4,17 +4,17 @@
 package com.zhss.dfs.namenode.rpc.model;
 
 /**
- * Protobuf type {@code com.zhss.dfs.namenode.rpc.RegisterResponse}
+ * Protobuf type {@code com.zhss.dfs.namenode.rpc.MkdirResponse}
  */
-public  final class RegisterResponse extends
+public  final class MkdirResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.zhss.dfs.namenode.rpc.RegisterResponse)
-    RegisterResponseOrBuilder {
-  // Use RegisterResponse.newBuilder() to construct.
-  private RegisterResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:com.zhss.dfs.namenode.rpc.MkdirResponse)
+    MkdirResponseOrBuilder {
+  // Use MkdirResponse.newBuilder() to construct.
+  private MkdirResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private RegisterResponse() {
+  private MkdirResponse() {
     status_ = 0;
   }
 
@@ -23,7 +23,7 @@ public  final class RegisterResponse extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private RegisterResponse(
+  private MkdirResponse(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -61,14 +61,14 @@ public  final class RegisterResponse extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_RegisterResponse_descriptor;
+    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_descriptor;
   }
 
   protected FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_RegisterResponse_fieldAccessorTable
+    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            RegisterResponse.class, Builder.class);
+            MkdirResponse.class, Builder.class);
   }
 
   public static final int STATUS_FIELD_NUMBER = 1;
@@ -116,10 +116,10 @@ public  final class RegisterResponse extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof RegisterResponse)) {
+    if (!(obj instanceof MkdirResponse)) {
       return super.equals(obj);
     }
-    RegisterResponse other = (RegisterResponse) obj;
+    MkdirResponse other = (MkdirResponse) obj;
 
     boolean result = true;
     result = result && (getStatus()
@@ -141,58 +141,58 @@ public  final class RegisterResponse extends
     return hash;
   }
 
-  public static RegisterResponse parseFrom(
+  public static MkdirResponse parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static RegisterResponse parseFrom(
+  public static MkdirResponse parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static RegisterResponse parseFrom(byte[] data)
+  public static MkdirResponse parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static RegisterResponse parseFrom(
+  public static MkdirResponse parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static RegisterResponse parseFrom(java.io.InputStream input)
+  public static MkdirResponse parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static RegisterResponse parseFrom(
+  public static MkdirResponse parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static RegisterResponse parseDelimitedFrom(java.io.InputStream input)
+  public static MkdirResponse parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static RegisterResponse parseDelimitedFrom(
+  public static MkdirResponse parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static RegisterResponse parseFrom(
+  public static MkdirResponse parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static RegisterResponse parseFrom(
+  public static MkdirResponse parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -204,7 +204,7 @@ public  final class RegisterResponse extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(RegisterResponse prototype) {
+  public static Builder newBuilder(MkdirResponse prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -219,25 +219,25 @@ public  final class RegisterResponse extends
     return builder;
   }
   /**
-   * Protobuf type {@code com.zhss.dfs.namenode.rpc.RegisterResponse}
+   * Protobuf type {@code com.zhss.dfs.namenode.rpc.MkdirResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.zhss.dfs.namenode.rpc.RegisterResponse)
-      RegisterResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.zhss.dfs.namenode.rpc.MkdirResponse)
+      com.zhss.dfs.namenode.rpc.model.MkdirResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_RegisterResponse_descriptor;
+      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_descriptor;
     }
 
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_RegisterResponse_fieldAccessorTable
+      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              RegisterResponse.class, Builder.class);
+              MkdirResponse.class, Builder.class);
     }
 
-    // Construct using com.zhss.dfs.namenode.rpc.model.RegisterResponse.newBuilder()
+    // Construct using com.zhss.dfs.namenode.rpc.model.MkdirResponse.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -261,23 +261,23 @@ public  final class RegisterResponse extends
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_RegisterResponse_descriptor;
+      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_descriptor;
     }
 
-    public RegisterResponse getDefaultInstanceForType() {
-      return RegisterResponse.getDefaultInstance();
+    public MkdirResponse getDefaultInstanceForType() {
+      return MkdirResponse.getDefaultInstance();
     }
 
-    public RegisterResponse build() {
-      RegisterResponse result = buildPartial();
+    public MkdirResponse build() {
+      MkdirResponse result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public RegisterResponse buildPartial() {
-      RegisterResponse result = new RegisterResponse(this);
+    public MkdirResponse buildPartial() {
+      MkdirResponse result = new MkdirResponse(this);
       result.status_ = status_;
       onBuilt();
       return result;
@@ -310,16 +310,16 @@ public  final class RegisterResponse extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof RegisterResponse) {
-        return mergeFrom((RegisterResponse)other);
+      if (other instanceof MkdirResponse) {
+        return mergeFrom((MkdirResponse)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(RegisterResponse other) {
-      if (other == RegisterResponse.getDefaultInstance()) return this;
+    public Builder mergeFrom(MkdirResponse other) {
+      if (other == MkdirResponse.getDefaultInstance()) return this;
       if (other.getStatus() != 0) {
         setStatus(other.getStatus());
       }
@@ -335,11 +335,11 @@ public  final class RegisterResponse extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      RegisterResponse parsedMessage = null;
+      MkdirResponse parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (RegisterResponse) e.getUnfinishedMessage();
+        parsedMessage = (MkdirResponse) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -385,39 +385,39 @@ public  final class RegisterResponse extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.zhss.dfs.namenode.rpc.RegisterResponse)
+    // @@protoc_insertion_point(builder_scope:com.zhss.dfs.namenode.rpc.MkdirResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:com.zhss.dfs.namenode.rpc.RegisterResponse)
-  private static final RegisterResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.zhss.dfs.namenode.rpc.MkdirResponse)
+  private static final MkdirResponse DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new RegisterResponse();
+    DEFAULT_INSTANCE = new MkdirResponse();
   }
 
-  public static RegisterResponse getDefaultInstance() {
+  public static MkdirResponse getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<RegisterResponse>
-      PARSER = new com.google.protobuf.AbstractParser<RegisterResponse>() {
-    public RegisterResponse parsePartialFrom(
+  private static final com.google.protobuf.Parser<MkdirResponse>
+      PARSER = new com.google.protobuf.AbstractParser<MkdirResponse>() {
+    public MkdirResponse parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new RegisterResponse(input, extensionRegistry);
+        return new MkdirResponse(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<RegisterResponse> parser() {
+  public static com.google.protobuf.Parser<MkdirResponse> parser() {
     return PARSER;
   }
 
   @Override
-  public com.google.protobuf.Parser<RegisterResponse> getParserForType() {
+  public com.google.protobuf.Parser<MkdirResponse> getParserForType() {
     return PARSER;
   }
 
-  public RegisterResponse getDefaultInstanceForType() {
+  public MkdirResponse getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 

@@ -2,6 +2,8 @@ package com.zhss.dfs.namenode.server;
 
 import com.zhss.dfs.namenode.rpc.model.HeartbeatRequest;
 import com.zhss.dfs.namenode.rpc.model.HeartbeatResponse;
+import com.zhss.dfs.namenode.rpc.model.MkdirRequest;
+import com.zhss.dfs.namenode.rpc.model.MkdirResponse;
 import com.zhss.dfs.namenode.rpc.model.RegisterRequest;
 import com.zhss.dfs.namenode.rpc.model.RegisterResponse;
 import com.zhss.dfs.namenode.rpc.service.*;
@@ -32,16 +34,6 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 			DataNodeManager datanodeManager) {
 		this.namesystem = namesystem;
 		this.datanodeManager = datanodeManager;
-	}
-	
-	/**
-	 * 创建目录
-	 * @param path 目录路径
-	 * @return 是否创建成功
-	 * @throws Exception
-	 */
-	public Boolean mkdir(String path) throws Exception {
-		return this.namesystem.mkdir(path);
 	}
 
 	/**
@@ -82,6 +74,29 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 	
 		responseObserver.onNext(response);
 		responseObserver.onCompleted();
+	}
+
+	/**
+	 * 创建目录
+	 * @param request
+	 * @param responseObserver
+	 */
+	@Override
+	public void mkdir(MkdirRequest request, StreamObserver<MkdirResponse> responseObserver) {
+		try {
+			this.namesystem.mkdir(request.getPath());
+			
+			System.out.println("创建目录：path" + request.getPath()); 
+			
+			MkdirResponse response = MkdirResponse.newBuilder()
+					.setStatus(STATUS_SUCCESS)
+					.build();
+			
+			responseObserver.onNext(response);
+			responseObserver.onCompleted();
+		} catch (Exception e) {
+			e.printStackTrace(); 
+		}
 	}
 	
 }
