@@ -2,6 +2,7 @@ package com.zhss.dfs.namenode.server;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.StringJoiner;
 
 /**
  * 负责管理内存中的文件目录树的核心组件
@@ -46,13 +47,26 @@ public class FSDirectory {
 				}
 				
 				INodeDirectory child = new INodeDirectory(splitedPath); 
-				parent.addChild(child);  
+				parent.addChild(child);
+				parent = child;
 			}
 		}
+
+		printDirTree(dirTree, "");
 	}
-	
+
+
+	private void printDirTree(INodeDirectory dirTree, String blank) {
+		if (dirTree.getChildren().size() == 0) return;
+		for (INode dir : dirTree.getChildren()) {
+
+			System.out.println(((INodeDirectory) dir).getPath());
+			printDirTree((INodeDirectory) dir, blank + " -");
+		}
+	}
+
 	/**
-	 * 对文件目录树递归查找目录
+	 * 查找子目录
 	 * @param dir
 	 * @param path
 	 * @return
@@ -123,7 +137,14 @@ public class FSDirectory {
 		public void setChildren(List<INode> children) {
 			this.children = children;
 		}
-		
+
+		@Override
+		public String toString() {
+			return new StringJoiner(", ", INodeDirectory.class.getSimpleName() + "[", "]")
+					.add("path='" + path + "'")
+					.add("children=" + children)
+					.toString();
+		}
 	}
 	
 	/**
@@ -143,5 +164,11 @@ public class FSDirectory {
 		}
 		
 	}
-	
+
+	@Override
+	public String toString() {
+		return new StringJoiner(", ", FSDirectory.class.getSimpleName() + "[", "]")
+				.add("dirTree=" + dirTree)
+				.toString();
+	}
 }
