@@ -81,21 +81,19 @@ class DoubleBuffer {
          */
         FileChannel editsLogFileChannel;
 
+        /**
+         * 当前缓冲区写入的最大的txid
+         */
+        long maxTxid = 0L;
+
+        long lastMaxTxid = 0L;
+
         public EditLogBuffer() {
             this.buffer = new ByteArrayOutputStream(EDIT_LOG_BUFFER_LIMIT);
-            String logPath = "G:" + File.separator + "temp";
-            try {
-                RandomAccessFile rw = new RandomAccessFile(logPath, "rw");
-                FileOutputStream fileOutputStream = new FileOutputStream(rw.getFD());
-                this.editsLogFileChannel = fileOutputStream.getChannel();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
         }
 
         public void write(EditLog log) throws IOException {
+            this.maxTxid = log.getTxid();
             buffer.write(log.getContent().getBytes());
             buffer.write("\n".getBytes());
             System.out.println("在 currentBuffer 中写入一条数据： " + log.getContent());
@@ -112,9 +110,17 @@ class DoubleBuffer {
         public void flush() throws IOException {
             byte[] data = buffer.toByteArray();
             ByteBuffer wrap = ByteBuffer.wrap(data);
-            editsLogFileChannel.write(wrap);
-            // 强制把数据刷入磁盘上
-            editsLogFileChannel.force(false);
+            String editLogPath = "G:" + File.separator + "temp" + File.separator + "editslog" + File.separator + "edits-" + (++lastMaxTxid) + "-"  + maxTxid + ".log";
+
+            try(RandomAccessFile randomAccessFile = new RandomAccessFile(editLogPath, "rw");
+                FileOutputStream fileOutputStream = new FileOutputStream(randomAccessFile.getFD())) {
+                this.editsLogFileChannel = fileOutputStream.getChannel();
+                editsLogFileChannel.write(wrap);
+                // 强制把数据刷入磁盘上
+                editsLogFileChannel.force(false);
+            }
+
+            this.lastMaxTxid = maxTxid;
         }
 
         /**
