@@ -7,6 +7,9 @@ package com.zhss.dfs.namenode.server;
  * @Description:
  * @date 2021-11-08 22:25
  */
+
+import com.alibaba.fastjson.JSONObject;
+
 /**
  * 代表了一条edits log
  * @author zhonghuashishan
@@ -28,6 +31,9 @@ class EditLog {
 
     public void setTxid(long txid) {
         this.txid = txid;
+        JSONObject jsonObject = JSONObject.parseObject(content);
+        jsonObject.put("txid", txid);
+        this.content = jsonObject.toJSONString();
     }
 
     public String getContent() {

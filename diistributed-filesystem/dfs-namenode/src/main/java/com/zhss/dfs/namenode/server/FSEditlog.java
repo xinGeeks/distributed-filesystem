@@ -1,5 +1,6 @@
 package com.zhss.dfs.namenode.server;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 /**
@@ -46,7 +47,7 @@ public class FSEditlog {
 	 * 记录edits log日志
 	 * @param content
 	 */
-	public void logEdit(String content) {
+	public void logEdit(String content) throws IOException {
 		// 这里必须得直接加锁
 		synchronized(this) {
 			// 检查是否已有线程正在刷盘

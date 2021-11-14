@@ -8,6 +8,8 @@ package com.zhss.dfs.namenode.server;
  * @date 2021-11-08 22:24
  */
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.LinkedList;
 
 /**
@@ -20,7 +22,7 @@ class DoubleBuffer {
     /**
      * 单块editlog缓冲区的最大值 默认512字节
      */
-    public static final Long EDIT_LOG_BUFFER_LIMIT = 512 * 1024L;
+    public static final Integer EDIT_LOG_BUFFER_LIMIT = 512 * 1024;
 
 
     /**
@@ -37,7 +39,7 @@ class DoubleBuffer {
      * 将edits log写到内存缓冲里去
      * @param log
      */
-    public void write(EditLog log) {
+    public void write(EditLog log) throws IOException {
         currentBuffer.write(log);
     }
 
@@ -68,13 +70,19 @@ class DoubleBuffer {
 
     class EditLogBuffer {
 
-        public void write(EditLog log) {
+        /**
+         * 字节数组IO流
+         */
+        ByteArrayOutputStream out = new ByteArrayOutputStream(EDIT_LOG_BUFFER_LIMIT);
+
+        public void write(EditLog log) throws IOException {
+            out.write(log.getContent().getBytes());
             System.out.println("在 currentBuffer 中写入一条数据： " + log.getContent());
         }
 
         // 获取当前缓冲区大小
-        public Long size() {
-            return 0L;
+        public Integer size() {
+            return out.size();
         }
 
         public void flush() {

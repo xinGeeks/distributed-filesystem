@@ -28,7 +28,7 @@ public class FSNamesystem {
 	 */
 	public Boolean mkdir(String path) throws Exception {
 		this.directory.mkdir(path); 
-		this.editlog.logEdit("创建了一个目录：" + path);   
+		this.editlog.logEdit("{'OP':'MKDIR','PATH':'" + path +"'}");
 		return true;
 	}
 
