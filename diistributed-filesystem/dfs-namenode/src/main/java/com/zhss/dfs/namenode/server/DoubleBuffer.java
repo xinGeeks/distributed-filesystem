@@ -23,7 +23,7 @@ class DoubleBuffer {
     /**
      * 单块editlog缓冲区的最大值 默认512字节
      */
-    public static final Integer EDIT_LOG_BUFFER_LIMIT = 512 * 1024;
+    public static final Integer EDIT_LOG_BUFFER_LIMIT = 16 * 1024;
 
 
     /**
@@ -91,7 +91,7 @@ class DoubleBuffer {
             this.maxTxid = log.getTxid();
             buffer.write(log.getContent().getBytes());
             buffer.write("\n".getBytes());
-            System.out.println("在 currentBuffer 中写入一条数据： " + log.getContent());
+            System.out.println("在 currentBuffer 中写入一条数据： " + log.getContent() + "，当前缓冲区大小：" + size());
         }
 
         // 获取当前缓冲区大小
@@ -105,7 +105,7 @@ class DoubleBuffer {
         public void flush() throws IOException {
             byte[] data = buffer.toByteArray();
             ByteBuffer wrap = ByteBuffer.wrap(data);
-            String editLogPath = "G:" + File.separator + "temp" + File.separator + "editslog" + File.separator + "edits-" + (++lastMaxTxid) + "-"  + maxTxid + ".log";
+            String editLogPath = "G:" + File.separator + "temp"  + File.separator + "edits-" + (++lastMaxTxid) + "-"  + maxTxid + ".log";
 
             try(RandomAccessFile randomAccessFile = new RandomAccessFile(editLogPath, "rw");
                 FileOutputStream fileOutputStream = new FileOutputStream(randomAccessFile.getFD());

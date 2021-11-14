@@ -86,7 +86,7 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 		try {
 			this.namesystem.mkdir(request.getPath());
 			
-			System.out.println("创建目录：path" + request.getPath()); 
+			System.out.println("创建目录：" + request.getPath());
 			
 			MkdirResponse response = MkdirResponse.newBuilder()
 					.setStatus(STATUS_SUCCESS)

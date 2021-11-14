@@ -1,5 +1,7 @@
 package com.zhss.dfs.namenode.server;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -52,7 +54,7 @@ public class FSDirectory {
 			}
 		}
 
-		printDirTree(dirTree, "");
+		//printDirTree(dirTree, "");
 	}
 
 

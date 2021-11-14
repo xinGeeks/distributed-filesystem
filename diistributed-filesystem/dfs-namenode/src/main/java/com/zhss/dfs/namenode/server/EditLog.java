@@ -22,7 +22,10 @@ class EditLog {
 
     public EditLog(long txid, String content) {
         this.txid = txid;
-        this.content = content;
+
+        JSONObject jsonObject = JSONObject.parseObject(content);
+        jsonObject.put("txid", txid);
+        this.content = jsonObject.toJSONString();
     }
 
     public long getTxid() {
@@ -31,9 +34,6 @@ class EditLog {
 
     public void setTxid(long txid) {
         this.txid = txid;
-        JSONObject jsonObject = JSONObject.parseObject(content);
-        jsonObject.put("txid", txid);
-        this.content = jsonObject.toJSONString();
     }
 
     public String getContent() {
