@@ -77,11 +77,6 @@ class DoubleBuffer {
         ByteArrayOutputStream buffer;
 
         /**
-         * 磁盘上的editslog日志文件的channel
-         */
-        FileChannel editsLogFileChannel;
-
-        /**
          * 当前缓冲区写入的最大的txid
          */
         long maxTxid = 0L;
@@ -113,8 +108,10 @@ class DoubleBuffer {
             String editLogPath = "G:" + File.separator + "temp" + File.separator + "editslog" + File.separator + "edits-" + (++lastMaxTxid) + "-"  + maxTxid + ".log";
 
             try(RandomAccessFile randomAccessFile = new RandomAccessFile(editLogPath, "rw");
-                FileOutputStream fileOutputStream = new FileOutputStream(randomAccessFile.getFD())) {
-                this.editsLogFileChannel = fileOutputStream.getChannel();
+                FileOutputStream fileOutputStream = new FileOutputStream(randomAccessFile.getFD());
+                //磁盘上的editslog日志文件的channel
+                FileChannel editsLogFileChannel = fileOutputStream.getChannel()) {
+
                 editsLogFileChannel.write(wrap);
                 // 强制把数据刷入磁盘上
                 editsLogFileChannel.force(false);
