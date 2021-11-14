@@ -115,6 +115,11 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 		this.namesystem.flush();  
 	}
 
+	/**
+	 * 拉取edits log
+	 * @param request
+	 * @param responseObserver
+	 */
 	@Override
 	public void fetchEditsLog(FetchEditsLogRequest request, StreamObserver<FetchEditsLogResponse> responseObserver) {
 
