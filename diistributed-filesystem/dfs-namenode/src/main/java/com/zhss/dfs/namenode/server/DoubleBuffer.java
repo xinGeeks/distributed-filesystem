@@ -8,8 +8,9 @@ package com.zhss.dfs.namenode.server;
  * @date 2021-11-08 22:24
  */
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.LinkedList;
 
 /**
@@ -55,7 +56,7 @@ class DoubleBuffer {
     /**
      * 将syncBuffer缓冲区中的数据刷入磁盘中
      */
-    public void flush() {
+    public void flush() throws IOException {
         syncBuffer.flush();
         syncBuffer.clear();
     }
@@ -71,26 +72,56 @@ class DoubleBuffer {
     class EditLogBuffer {
 
         /**
-         * 字节数组IO流
+         * 内存缓冲区字节数组IO流
          */
-        ByteArrayOutputStream out = new ByteArrayOutputStream(EDIT_LOG_BUFFER_LIMIT);
+        ByteArrayOutputStream buffer;
+
+        /**
+         * 磁盘上的editslog日志文件的channel
+         */
+        FileChannel editsLogFileChannel;
+
+        public EditLogBuffer() {
+            this.buffer = new ByteArrayOutputStream(EDIT_LOG_BUFFER_LIMIT);
+            String logPath = "G:" + File.separator + "temp";
+            try {
+                RandomAccessFile rw = new RandomAccessFile(logPath, "rw");
+                FileOutputStream fileOutputStream = new FileOutputStream(rw.getFD());
+                this.editsLogFileChannel = fileOutputStream.getChannel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
 
         public void write(EditLog log) throws IOException {
-            out.write(log.getContent().getBytes());
+            buffer.write(log.getContent().getBytes());
+            buffer.write("\n".getBytes());
             System.out.println("在 currentBuffer 中写入一条数据： " + log.getContent());
         }
 
         // 获取当前缓冲区大小
         public Integer size() {
-            return out.size();
+            return buffer.size();
         }
 
-        public void flush() {
-
+        /**
+         * 将 sync buffer中的数据刷入磁盘中
+         */
+        public void flush() throws IOException {
+            byte[] data = buffer.toByteArray();
+            ByteBuffer wrap = ByteBuffer.wrap(data);
+            editsLogFileChannel.write(wrap);
+            // 强制把数据刷入磁盘上
+            editsLogFileChannel.force(false);
         }
 
+        /**
+         * 清空掉内存缓冲中的数据
+         */
         public void clear() {
-
+            buffer.reset();
         }
     }
 
