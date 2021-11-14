@@ -35,6 +35,10 @@ class DoubleBuffer {
      */
     private EditLogBuffer syncBuffer = new EditLogBuffer();
 
+    /**
+     * 当前缓冲区写入的最大的txid
+     */
+    long startTxid = 0L;
 
     /**
      * 将edits log写到内存缓冲里去
@@ -76,19 +80,14 @@ class DoubleBuffer {
          */
         ByteArrayOutputStream buffer;
 
-        /**
-         * 当前缓冲区写入的最大的txid
-         */
-        long maxTxid = 0L;
-
-        long lastMaxTxid = 0L;
+        long endTxid = 0L;
 
         public EditLogBuffer() {
             this.buffer = new ByteArrayOutputStream(EDIT_LOG_BUFFER_LIMIT);
         }
 
         public void write(EditLog log) throws IOException {
-            this.maxTxid = log.getTxid();
+            endTxid = log.getTxid();
             buffer.write(log.getContent().getBytes());
             buffer.write("\n".getBytes());
             System.out.println("在 currentBuffer 中写入一条数据： " + log.getContent() + "，当前缓冲区大小：" + size());
@@ -105,7 +104,7 @@ class DoubleBuffer {
         public void flush() throws IOException {
             byte[] data = buffer.toByteArray();
             ByteBuffer wrap = ByteBuffer.wrap(data);
-            String editLogPath = "G:" + File.separator + "temp"  + File.separator + "edits-" + (++lastMaxTxid) + "-"  + maxTxid + ".log";
+            String editLogPath = "G:" + File.separator + "temp"  + File.separator + "edits-" + startTxid + "-"  + endTxid + ".log";
 
             try(RandomAccessFile randomAccessFile = new RandomAccessFile(editLogPath, "rw");
                 FileOutputStream fileOutputStream = new FileOutputStream(randomAccessFile.getFD());
@@ -117,7 +116,7 @@ class DoubleBuffer {
                 editsLogFileChannel.force(false);
             }
 
-            this.lastMaxTxid = maxTxid;
+            startTxid = endTxid + 1;
         }
 
         /**
