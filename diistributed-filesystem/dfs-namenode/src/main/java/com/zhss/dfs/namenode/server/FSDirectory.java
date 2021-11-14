@@ -1,10 +1,7 @@
 package com.zhss.dfs.namenode.server;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.StringJoiner;
 
 /**
  * 负责管理内存中的文件目录树的核心组件
@@ -16,10 +13,16 @@ public class FSDirectory {
 	/**
 	 * 内存中的文件目录树
 	 */
-	private INodeDirectory dirTree;
+	private INodeDirectory dirTree; 
+	// 他就是一个父子层级关系的数据结构，文件目录树
+	// 创建目录，删除目录，重命名目录，创建文件，删除文件，重命名文件
+	// 诸如此类的一些操作，都是在维护内存里的文件目录树，其实本质都是对这个内存的数据结构进行更新
+	
+	// 先创建了一个目录层级结果：/usr/warehosue/hive
+	// 如果此时来创建另外一个目录：/usr/warehouse/spark
 	
 	public FSDirectory() {
-		this.dirTree = new INodeDirectory("/");  
+		this.dirTree = new INodeDirectory("/");  // 默认刚开始就是空的节点
 	}
 	
 	/**
@@ -33,40 +36,42 @@ public class FSDirectory {
 		// 如果说没有，那么就得先创建一个“/warehosue”对应的目录，挂在“/usr”目录下
 		// 接着再对“/hive”这个目录创建一个节点挂载上去
 	
-		synchronized(dirTree) {
+		synchronized(dirTree) { // 内存数据结构，更新的时候必须得加锁的
 			String[] pathes = path.split("/");
 			INodeDirectory parent = dirTree;
 			
-			for(String splitedPath : pathes) {
+			for(String splitedPath : pathes) { // ["","usr","warehosue","spark"]  
 				if(splitedPath.trim().equals("")) {
 					continue;
 				}
 				
-				INodeDirectory dir = findDirectory(parent, splitedPath);
+				INodeDirectory dir = findDirectory(parent, splitedPath); // parent="/usr"
+				
 				if(dir != null) {
 					parent = dir;
 					continue;
 				}
 				
-				INodeDirectory child = new INodeDirectory(splitedPath); 
-				parent.addChild(child);
+				INodeDirectory child = new INodeDirectory(splitedPath); // "/usr"
+				parent.addChild(child);  
 				parent = child;
 			}
 		}
-
-		//printDirTree(dirTree, "");
+		
+//		printDirTree(dirTree, "");  
 	}
-
-
+	
+	@SuppressWarnings("unused")
 	private void printDirTree(INodeDirectory dirTree, String blank) {
-		if (dirTree.getChildren().size() == 0) return;
-		for (INode dir : dirTree.getChildren()) {
-
-			System.out.println(((INodeDirectory) dir).getPath());
-			printDirTree((INodeDirectory) dir, blank + " -");
+		if(dirTree.getChildren().size() == 0) {
+			return;
+		}
+		for(INode dir : dirTree.getChildren()) {
+			System.out.println(blank + ((INodeDirectory) dir).getPath());    
+			printDirTree((INodeDirectory) dir, blank + " ");  
 		}
 	}
-
+	
 	/**
 	 * 查找子目录
 	 * @param dir
@@ -78,20 +83,12 @@ public class FSDirectory {
 			return null;
 		}
 		
-		INodeDirectory resultDir = null;
-		
 		for(INode child : dir.getChildren()) {
 			if(child instanceof INodeDirectory) {
 				INodeDirectory childDir = (INodeDirectory) child;
-				
 				if((childDir.getPath().equals(path))) {
 					return childDir;
 				} 
-				
-				resultDir = findDirectory(childDir, path);
-				if(resultDir != null) {
-					return resultDir;
-				}
 			}
 		}
 		
@@ -142,11 +139,9 @@ public class FSDirectory {
 
 		@Override
 		public String toString() {
-			return new StringJoiner(", ", INodeDirectory.class.getSimpleName() + "[", "]")
-					.add("path='" + path + "'")
-					.add("children=" + children)
-					.toString();
+			return "INodeDirectory [path=" + path + ", children=" + children + "]";
 		}
+		
 	}
 	
 	/**
@@ -165,12 +160,11 @@ public class FSDirectory {
 			this.name = name;
 		}
 		
+		@Override
+		public String toString() {
+			return "INodeFile [name=" + name + "]";
+		}
+		
 	}
-
-	@Override
-	public String toString() {
-		return new StringJoiner(", ", FSDirectory.class.getSimpleName() + "[", "]")
-				.add("dirTree=" + dirTree)
-				.toString();
-	}
+	
 }

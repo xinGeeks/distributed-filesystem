@@ -1,13 +1,5 @@
 package com.zhss.dfs.namenode.server;
 
-/**
- * @author SemperFi
- * @Title: null.java
- * @Package diistributed-filesystem
- * @Description:
- * @date 2021-11-08 22:25
- */
-
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -15,32 +7,35 @@ import com.alibaba.fastjson.JSONObject;
  * @author zhonghuashishan
  *
  */
-class EditLog {
+public class EditLog {
 
-    private long txid;
-    private String content;
+	private long txid;
+	private String content;
+	
+	public EditLog(long txid, String content) {
+		this.txid = txid;
+		
+		JSONObject jsonObject = JSONObject.parseObject(content);
+		jsonObject.put("txid", txid);
+		this.content = jsonObject.toJSONString();
+	}
 
-    public EditLog(long txid, String content) {
-        this.txid = txid;
+	public long getTxid() {
+		return txid;
+	}
+	public void setTxid(long txid) {
+		this.txid = txid;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-        JSONObject jsonObject = JSONObject.parseObject(content);
-        jsonObject.put("txid", txid);
-        this.content = jsonObject.toJSONString();
-    }
-
-    public long getTxid() {
-        return txid;
-    }
-
-    public void setTxid(long txid) {
-        this.txid = txid;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+	@Override
+	public String toString() {
+		return "EditLog [txid=" + txid + ", content=" + content + "]";
+	}
+	
 }

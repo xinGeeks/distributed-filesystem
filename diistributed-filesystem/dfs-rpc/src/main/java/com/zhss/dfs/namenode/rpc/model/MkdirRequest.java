@@ -249,7 +249,7 @@ public  final class MkdirRequest extends
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
       // @@protoc_insertion_point(builder_implements:com.zhss.dfs.namenode.rpc.MkdirRequest)
-      com.zhss.dfs.namenode.rpc.model.MkdirRequestOrBuilder {
+      MkdirRequestOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
       return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirRequest_descriptor;

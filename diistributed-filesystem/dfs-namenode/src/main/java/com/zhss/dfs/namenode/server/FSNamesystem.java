@@ -10,6 +10,7 @@ public class FSNamesystem {
 	/**
 	 * 负责管理内存文件目录树的组件
 	 */
+	// 这个组件，就是专门负责维护内存中的文件目录树的
 	private FSDirectory directory;
 	/**
 	 * 负责管理edits log写入磁盘的组件
@@ -27,9 +28,16 @@ public class FSNamesystem {
 	 * @return 是否成功
 	 */
 	public Boolean mkdir(String path) throws Exception {
-		this.directory.mkdir(path); 
-		this.editlog.logEdit("{'OP':'MKDIR','PATH':'" + path +"'}");
+		this.directory.mkdir(path); // 第一步就是基于FSDirectory这个组件来真正去管理文件目录树
+		this.editlog.logEdit("{'OP':'MKDIR','PATH':'" + path + "'}");     
 		return true;
+	}
+	
+	/**
+	 * 强制把内存里的edits log刷入磁盘中
+	 */
+	public void flush() {
+		this.editlog.flush();
 	}
 
 }

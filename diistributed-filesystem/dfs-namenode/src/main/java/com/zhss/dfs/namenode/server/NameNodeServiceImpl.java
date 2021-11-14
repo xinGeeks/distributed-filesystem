@@ -1,11 +1,6 @@
 package com.zhss.dfs.namenode.server;
 
-import com.zhss.dfs.namenode.rpc.model.HeartbeatRequest;
-import com.zhss.dfs.namenode.rpc.model.HeartbeatResponse;
-import com.zhss.dfs.namenode.rpc.model.MkdirRequest;
-import com.zhss.dfs.namenode.rpc.model.MkdirResponse;
-import com.zhss.dfs.namenode.rpc.model.RegisterRequest;
-import com.zhss.dfs.namenode.rpc.model.RegisterResponse;
+import com.zhss.dfs.namenode.rpc.model.*;
 import com.zhss.dfs.namenode.rpc.service.*;
 
 import io.grpc.stub.StreamObserver;
@@ -19,15 +14,22 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 
 	public static final Integer STATUS_SUCCESS = 1;
 	public static final Integer STATUS_FAILURE = 2;
+	public static final Integer STATUS_SHUTDOWN = 3;
 	
 	/**
 	 * 负责管理元数据的核心组件
 	 */
-	private FSNamesystem namesystem;
+	// 他是一个逻辑上的组件，主要是负责管理元数据的更新
+	// 比如说你要更新内存里的文件目录树的话，就可以去找他，他更新的就是元数据
+	private FSNamesystem namesystem; 
 	/**
 	 * 负责管理集群中所有的datanode的组件
 	 */
 	private DataNodeManager datanodeManager;
+	/**
+	 * 是否还在运行
+	 */
+	private volatile Boolean isRunning = true;
 	
 	public NameNodeServiceImpl(
 			FSNamesystem namesystem, 
@@ -84,13 +86,19 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 	@Override
 	public void mkdir(MkdirRequest request, StreamObserver<MkdirResponse> responseObserver) {
 		try {
-			this.namesystem.mkdir(request.getPath());
+			MkdirResponse response = null;
 			
-			System.out.println("创建目录：" + request.getPath());
-			
-			MkdirResponse response = MkdirResponse.newBuilder()
-					.setStatus(STATUS_SUCCESS)
-					.build();
+			if(!isRunning) {
+				response = MkdirResponse.newBuilder()
+						.setStatus(STATUS_SHUTDOWN)
+						.build();
+			} else {
+				this.namesystem.mkdir(request.getPath());
+				
+				response = MkdirResponse.newBuilder()
+						.setStatus(STATUS_SUCCESS)
+						.build();
+			}
 			
 			responseObserver.onNext(response);
 			responseObserver.onCompleted();
@@ -98,5 +106,18 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 			e.printStackTrace(); 
 		}
 	}
-	
+
+	/**
+	 * 优雅关闭
+	 */
+	public void shutdown(ShutdownRequest request, StreamObserver<ShutdownResponse> responseObserver) {
+		this.isRunning = false;
+		this.namesystem.flush();  
+	}
+
+	@Override
+	public void fetchEditsLog(FetchEditsLogRequest request, StreamObserver<FetchEditsLogResponse> responseObserver) {
+
+	}
+
 }

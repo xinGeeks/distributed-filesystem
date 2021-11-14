@@ -4,18 +4,18 @@
 package com.zhss.dfs.namenode.rpc.model;
 
 /**
- * Protobuf type {@code com.zhss.dfs.namenode.rpc.MkdirResponse}
+ * Protobuf type {@code com.zhss.dfs.namenode.rpc.FetchEditsLogResponse}
  */
-public  final class MkdirResponse extends
+public  final class FetchEditsLogResponse extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:com.zhss.dfs.namenode.rpc.MkdirResponse)
-    MkdirResponseOrBuilder {
-  // Use MkdirResponse.newBuilder() to construct.
-  private MkdirResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // @@protoc_insertion_point(message_implements:com.zhss.dfs.namenode.rpc.FetchEditsLogResponse)
+    FetchEditsLogResponseOrBuilder {
+  // Use FetchEditsLogResponse.newBuilder() to construct.
+  private FetchEditsLogResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private MkdirResponse() {
-    status_ = 0;
+  private FetchEditsLogResponse() {
+    editsLog_ = "";
   }
 
   @Override
@@ -23,7 +23,7 @@ public  final class MkdirResponse extends
   getUnknownFields() {
     return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
   }
-  private MkdirResponse(
+  private FetchEditsLogResponse(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -43,9 +43,10 @@ public  final class MkdirResponse extends
             }
             break;
           }
-          case 8: {
+          case 10: {
+            String s = input.readStringRequireUtf8();
 
-            status_ = input.readInt32();
+            editsLog_ = s;
             break;
           }
         }
@@ -61,23 +62,48 @@ public  final class MkdirResponse extends
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_descriptor;
+    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_FetchEditsLogResponse_descriptor;
   }
 
   protected FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_fieldAccessorTable
+    return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_FetchEditsLogResponse_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            MkdirResponse.class, Builder.class);
+            FetchEditsLogResponse.class, Builder.class);
   }
 
-  public static final int STATUS_FIELD_NUMBER = 1;
-  private int status_;
+  public static final int EDITSLOG_FIELD_NUMBER = 1;
+  private volatile Object editsLog_;
   /**
-   * <code>optional int32 status = 1;</code>
+   * <code>optional string editsLog = 1;</code>
    */
-  public int getStatus() {
-    return status_;
+  public String getEditsLog() {
+    Object ref = editsLog_;
+    if (ref instanceof String) {
+      return (String) ref;
+    } else {
+      com.google.protobuf.ByteString bs = 
+          (com.google.protobuf.ByteString) ref;
+      String s = bs.toStringUtf8();
+      editsLog_ = s;
+      return s;
+    }
+  }
+  /**
+   * <code>optional string editsLog = 1;</code>
+   */
+  public com.google.protobuf.ByteString
+      getEditsLogBytes() {
+    Object ref = editsLog_;
+    if (ref instanceof String) {
+      com.google.protobuf.ByteString b = 
+          com.google.protobuf.ByteString.copyFromUtf8(
+              (String) ref);
+      editsLog_ = b;
+      return b;
+    } else {
+      return (com.google.protobuf.ByteString) ref;
+    }
   }
 
   private byte memoizedIsInitialized = -1;
@@ -92,8 +118,8 @@ public  final class MkdirResponse extends
 
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (status_ != 0) {
-      output.writeInt32(1, status_);
+    if (!getEditsLogBytes().isEmpty()) {
+      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, editsLog_);
     }
   }
 
@@ -102,9 +128,8 @@ public  final class MkdirResponse extends
     if (size != -1) return size;
 
     size = 0;
-    if (status_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, status_);
+    if (!getEditsLogBytes().isEmpty()) {
+      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, editsLog_);
     }
     memoizedSize = size;
     return size;
@@ -116,14 +141,14 @@ public  final class MkdirResponse extends
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof MkdirResponse)) {
+    if (!(obj instanceof FetchEditsLogResponse)) {
       return super.equals(obj);
     }
-    MkdirResponse other = (MkdirResponse) obj;
+    FetchEditsLogResponse other = (FetchEditsLogResponse) obj;
 
     boolean result = true;
-    result = result && (getStatus()
-        == other.getStatus());
+    result = result && getEditsLog()
+        .equals(other.getEditsLog());
     return result;
   }
 
@@ -134,65 +159,65 @@ public  final class MkdirResponse extends
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptorForType().hashCode();
-    hash = (37 * hash) + STATUS_FIELD_NUMBER;
-    hash = (53 * hash) + getStatus();
+    hash = (37 * hash) + EDITSLOG_FIELD_NUMBER;
+    hash = (53 * hash) + getEditsLog().hashCode();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static MkdirResponse parseFrom(
+  public static FetchEditsLogResponse parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static MkdirResponse parseFrom(
+  public static FetchEditsLogResponse parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static MkdirResponse parseFrom(byte[] data)
+  public static FetchEditsLogResponse parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static MkdirResponse parseFrom(
+  public static FetchEditsLogResponse parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static MkdirResponse parseFrom(java.io.InputStream input)
+  public static FetchEditsLogResponse parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static MkdirResponse parseFrom(
+  public static FetchEditsLogResponse parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static MkdirResponse parseDelimitedFrom(java.io.InputStream input)
+  public static FetchEditsLogResponse parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static MkdirResponse parseDelimitedFrom(
+  public static FetchEditsLogResponse parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static MkdirResponse parseFrom(
+  public static FetchEditsLogResponse parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static MkdirResponse parseFrom(
+  public static FetchEditsLogResponse parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -204,7 +229,7 @@ public  final class MkdirResponse extends
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(MkdirResponse prototype) {
+  public static Builder newBuilder(FetchEditsLogResponse prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   public Builder toBuilder() {
@@ -219,25 +244,25 @@ public  final class MkdirResponse extends
     return builder;
   }
   /**
-   * Protobuf type {@code com.zhss.dfs.namenode.rpc.MkdirResponse}
+   * Protobuf type {@code com.zhss.dfs.namenode.rpc.FetchEditsLogResponse}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:com.zhss.dfs.namenode.rpc.MkdirResponse)
-      MkdirResponseOrBuilder {
+      // @@protoc_insertion_point(builder_implements:com.zhss.dfs.namenode.rpc.FetchEditsLogResponse)
+      com.zhss.dfs.namenode.rpc.model.FetchEditsLogResponseOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_descriptor;
+      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_FetchEditsLogResponse_descriptor;
     }
 
     protected FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_fieldAccessorTable
+      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_FetchEditsLogResponse_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              MkdirResponse.class, Builder.class);
+              FetchEditsLogResponse.class, Builder.class);
     }
 
-    // Construct using com.zhss.dfs.namenode.rpc.model.MkdirResponse.newBuilder()
+    // Construct using com.zhss.dfs.namenode.rpc.model.FetchEditsLogResponse.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -254,31 +279,31 @@ public  final class MkdirResponse extends
     }
     public Builder clear() {
       super.clear();
-      status_ = 0;
+      editsLog_ = "";
 
       return this;
     }
 
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_MkdirResponse_descriptor;
+      return NameNodeRpcModel.internal_static_com_zhss_dfs_namenode_rpc_FetchEditsLogResponse_descriptor;
     }
 
-    public MkdirResponse getDefaultInstanceForType() {
-      return MkdirResponse.getDefaultInstance();
+    public FetchEditsLogResponse getDefaultInstanceForType() {
+      return FetchEditsLogResponse.getDefaultInstance();
     }
 
-    public MkdirResponse build() {
-      MkdirResponse result = buildPartial();
+    public FetchEditsLogResponse build() {
+      FetchEditsLogResponse result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
       return result;
     }
 
-    public MkdirResponse buildPartial() {
-      MkdirResponse result = new MkdirResponse(this);
-      result.status_ = status_;
+    public FetchEditsLogResponse buildPartial() {
+      FetchEditsLogResponse result = new FetchEditsLogResponse(this);
+      result.editsLog_ = editsLog_;
       onBuilt();
       return result;
     }
@@ -310,18 +335,19 @@ public  final class MkdirResponse extends
       return (Builder) super.addRepeatedField(field, value);
     }
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof MkdirResponse) {
-        return mergeFrom((MkdirResponse)other);
+      if (other instanceof FetchEditsLogResponse) {
+        return mergeFrom((FetchEditsLogResponse)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(MkdirResponse other) {
-      if (other == MkdirResponse.getDefaultInstance()) return this;
-      if (other.getStatus() != 0) {
-        setStatus(other.getStatus());
+    public Builder mergeFrom(FetchEditsLogResponse other) {
+      if (other == FetchEditsLogResponse.getDefaultInstance()) return this;
+      if (!other.getEditsLog().isEmpty()) {
+        editsLog_ = other.editsLog_;
+        onChanged();
       }
       onChanged();
       return this;
@@ -335,11 +361,11 @@ public  final class MkdirResponse extends
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      MkdirResponse parsedMessage = null;
+      FetchEditsLogResponse parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (MkdirResponse) e.getUnfinishedMessage();
+        parsedMessage = (FetchEditsLogResponse) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
@@ -349,28 +375,71 @@ public  final class MkdirResponse extends
       return this;
     }
 
-    private int status_ ;
+    private Object editsLog_ = "";
     /**
-     * <code>optional int32 status = 1;</code>
+     * <code>optional string editsLog = 1;</code>
      */
-    public int getStatus() {
-      return status_;
+    public String getEditsLog() {
+      Object ref = editsLog_;
+      if (!(ref instanceof String)) {
+        com.google.protobuf.ByteString bs =
+            (com.google.protobuf.ByteString) ref;
+        String s = bs.toStringUtf8();
+        editsLog_ = s;
+        return s;
+      } else {
+        return (String) ref;
+      }
     }
     /**
-     * <code>optional int32 status = 1;</code>
+     * <code>optional string editsLog = 1;</code>
      */
-    public Builder setStatus(int value) {
-      
-      status_ = value;
+    public com.google.protobuf.ByteString
+        getEditsLogBytes() {
+      Object ref = editsLog_;
+      if (ref instanceof String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (String) ref);
+        editsLog_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+    /**
+     * <code>optional string editsLog = 1;</code>
+     */
+    public Builder setEditsLog(
+        String value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  
+      editsLog_ = value;
       onChanged();
       return this;
     }
     /**
-     * <code>optional int32 status = 1;</code>
+     * <code>optional string editsLog = 1;</code>
      */
-    public Builder clearStatus() {
+    public Builder clearEditsLog() {
       
-      status_ = 0;
+      editsLog_ = getDefaultInstance().getEditsLog();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional string editsLog = 1;</code>
+     */
+    public Builder setEditsLogBytes(
+        com.google.protobuf.ByteString value) {
+      if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+      
+      editsLog_ = value;
       onChanged();
       return this;
     }
@@ -385,39 +454,39 @@ public  final class MkdirResponse extends
     }
 
 
-    // @@protoc_insertion_point(builder_scope:com.zhss.dfs.namenode.rpc.MkdirResponse)
+    // @@protoc_insertion_point(builder_scope:com.zhss.dfs.namenode.rpc.FetchEditsLogResponse)
   }
 
-  // @@protoc_insertion_point(class_scope:com.zhss.dfs.namenode.rpc.MkdirResponse)
-  private static final MkdirResponse DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:com.zhss.dfs.namenode.rpc.FetchEditsLogResponse)
+  private static final FetchEditsLogResponse DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new MkdirResponse();
+    DEFAULT_INSTANCE = new FetchEditsLogResponse();
   }
 
-  public static MkdirResponse getDefaultInstance() {
+  public static FetchEditsLogResponse getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<MkdirResponse>
-      PARSER = new com.google.protobuf.AbstractParser<MkdirResponse>() {
-    public MkdirResponse parsePartialFrom(
+  private static final com.google.protobuf.Parser<FetchEditsLogResponse>
+      PARSER = new com.google.protobuf.AbstractParser<FetchEditsLogResponse>() {
+    public FetchEditsLogResponse parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-        return new MkdirResponse(input, extensionRegistry);
+        return new FetchEditsLogResponse(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<MkdirResponse> parser() {
+  public static com.google.protobuf.Parser<FetchEditsLogResponse> parser() {
     return PARSER;
   }
 
   @Override
-  public com.google.protobuf.Parser<MkdirResponse> getParserForType() {
+  public com.google.protobuf.Parser<FetchEditsLogResponse> getParserForType() {
     return PARSER;
   }
 
-  public MkdirResponse getDefaultInstanceForType() {
+  public FetchEditsLogResponse getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 
