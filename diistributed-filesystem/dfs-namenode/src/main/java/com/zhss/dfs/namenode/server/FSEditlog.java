@@ -172,22 +172,23 @@ public class FSEditlog {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
-	 * 获取已经刷入磁盘中的数据
+	 * 获取已经刷入磁盘的editslog数据
 	 * @return
 	 */
-	public List<String> getFlushedTxid() {
-		synchronized (this) {
-			return doubleBuffer.getFlushedTxid();
+	public List<String> getFlushedTxids() {
+		synchronized(this) {
+			return doubleBuffer.getFlushedTxids();  
 		}
 	}
-
+	
 	/**
-	 * 获取当前缓冲区中的数据
+	 * 获取当前缓冲区里的数据
+	 * @return
 	 */
 	public String[] getBufferedEditsLog() {
-		synchronized (this) {
+		synchronized(this) {
 			return doubleBuffer.getBufferedEditsLog();
 		}
 	}

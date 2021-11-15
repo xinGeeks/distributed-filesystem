@@ -39,8 +39,12 @@ public class FSNamesystem {
 	public void flush() {
 		this.editlog.flush();
 	}
-
-	public FSEditlog getEditlog() {
+	
+	/**
+	 * 获取一个FSEditLog组件
+	 * @return
+	 */
+	public FSEditlog getEditsLog() {
 		return editlog;
 	}
 

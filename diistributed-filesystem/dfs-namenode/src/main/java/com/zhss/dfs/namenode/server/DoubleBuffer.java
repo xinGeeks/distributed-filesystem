@@ -33,11 +33,10 @@ public class DoubleBuffer {
 	 * 当前这块缓冲区写入的最大的一个txid
 	 */
 	private long startTxid = 1L;
-
 	/**
-	 * 已经刷入磁盘中的Txid
+	 * 已经输入磁盘中的txid范围
 	 */
-	private List<String> flushedTxid = new ArrayList<>();
+	private List<String> flushedTxids = new ArrayList<String>();
 	
 	/**
 	 * 将edits log写到内存缓冲里去
@@ -76,21 +75,22 @@ public class DoubleBuffer {
 		syncBuffer.flush();
 		syncBuffer.clear();   
 	}
-
+	
 	/**
-	 * 获取已经刷入磁盘中的数据
+	 * 获取已经刷入磁盘的editslog数据
 	 * @return
 	 */
-	public List<String> getFlushedTxid() {
-		return flushedTxid;
+	public List<String> getFlushedTxids() {
+		return flushedTxids;
 	}
-
+	
 	/**
-	 * 获取当前缓冲区中的数据
+	 * 获取当前缓冲区里的数据
+	 * @return
 	 */
 	public String[] getBufferedEditsLog() {
-		String editslogRawData = new String(currentBuffer.getBufferData());
-		return editslogRawData.split("\n");
+		String editsLogRawData = new String(currentBuffer.getBufferData());
+		return editsLogRawData.split("\n");  
 	}
 	
 	/**
@@ -144,8 +144,7 @@ public class DoubleBuffer {
 			
 			String editsLogFilePath = "F:\\development\\editslog\\edits-" 
 					+ startTxid + "-" + endTxid + ".log";
-
-			flushedTxid.add(startTxid + "_" + endTxid);
+			flushedTxids.add(startTxid + "_" + endTxid);
 			 
 			RandomAccessFile file = null;
 			FileOutputStream out = null;
@@ -179,9 +178,9 @@ public class DoubleBuffer {
 		public void clear() {
 			buffer.reset();  
 		}
-
+		
 		/**
-		 * 获取当前内存缓冲区中的数据
+		 * 获取内存缓冲区当前的数据
 		 * @return
 		 */
 		public byte[] getBufferData() {
