@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 内存双缓冲
@@ -30,7 +32,12 @@ public class DoubleBuffer {
 	/**
 	 * 当前这块缓冲区写入的最大的一个txid
 	 */
-	long startTxid = 1L;
+	private long startTxid = 1L;
+
+	/**
+	 * 已经刷入磁盘中的Txid
+	 */
+	private List<String> flushedTxid = new ArrayList<>();
 	
 	/**
 	 * 将edits log写到内存缓冲里去
@@ -68,6 +75,22 @@ public class DoubleBuffer {
 	public void flush() throws IOException {
 		syncBuffer.flush();
 		syncBuffer.clear();   
+	}
+
+	/**
+	 * 获取已经刷入磁盘中的数据
+	 * @return
+	 */
+	public List<String> getFlushedTxid() {
+		return flushedTxid;
+	}
+
+	/**
+	 * 获取当前缓冲区中的数据
+	 */
+	public String[] getBufferedEditsLog() {
+		String editslogRawData = new String(currentBuffer.getBufferData());
+		return editslogRawData.split("\n");
 	}
 	
 	/**
@@ -121,6 +144,8 @@ public class DoubleBuffer {
 			
 			String editsLogFilePath = "F:\\development\\editslog\\edits-" 
 					+ startTxid + "-" + endTxid + ".log";
+
+			flushedTxid.add(startTxid + "_" + endTxid);
 			 
 			RandomAccessFile file = null;
 			FileOutputStream out = null;
@@ -153,6 +178,14 @@ public class DoubleBuffer {
 		 */
 		public void clear() {
 			buffer.reset();  
+		}
+
+		/**
+		 * 获取当前内存缓冲区中的数据
+		 * @return
+		 */
+		public byte[] getBufferData() {
+			return buffer.toByteArray();
 		}
 		
 	}

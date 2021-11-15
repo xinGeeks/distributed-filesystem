@@ -1,6 +1,7 @@
 package com.zhss.dfs.namenode.server;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 负责管理edits log日志的核心组件
@@ -169,6 +170,25 @@ public class FSEditlog {
 			doubleBuffer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * 获取已经刷入磁盘中的数据
+	 * @return
+	 */
+	public List<String> getFlushedTxid() {
+		synchronized (this) {
+			return doubleBuffer.getFlushedTxid();
+		}
+	}
+
+	/**
+	 * 获取当前缓冲区中的数据
+	 */
+	public String[] getBufferedEditsLog() {
+		synchronized (this) {
+			return doubleBuffer.getBufferedEditsLog();
 		}
 	}
 	

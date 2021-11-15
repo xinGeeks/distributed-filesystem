@@ -40,4 +40,8 @@ public class FSNamesystem {
 		this.editlog.flush();
 	}
 
+	public FSEditlog getEditlog() {
+		return editlog;
+	}
+
 }

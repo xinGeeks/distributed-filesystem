@@ -1,9 +1,13 @@
 package com.zhss.dfs.namenode.server;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.zhss.dfs.namenode.rpc.model.*;
 import com.zhss.dfs.namenode.rpc.service.*;
 
 import io.grpc.stub.StreamObserver;
+
+import java.util.List;
 
 /**
  * NameNode的rpc服务的接口
@@ -15,6 +19,7 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 	public static final Integer STATUS_SUCCESS = 1;
 	public static final Integer STATUS_FAILURE = 2;
 	public static final Integer STATUS_SHUTDOWN = 3;
+	public static final Integer BACKUP_NODE_FETCH_SIZE = 10;
 	
 	/**
 	 * 负责管理元数据的核心组件
@@ -30,6 +35,16 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 	 * 是否还在运行
 	 */
 	private volatile Boolean isRunning = true;
+
+	/**
+	 * 当前backupNode节点同步到了哪一条
+	 */
+	private long backupSyncTxid = 0L;
+
+	/**
+	 * 当前缓冲的editslog
+	 */
+	private JSONArray currentBufferedEditsLog = new JSONArray();
 	
 	public NameNodeServiceImpl(
 			FSNamesystem namesystem, 
@@ -122,6 +137,52 @@ public class NameNodeServiceImpl implements NameNodeServiceGrpc.NameNodeService 
 	 */
 	@Override
 	public void fetchEditsLog(FetchEditsLogRequest request, StreamObserver<FetchEditsLogResponse> responseObserver) {
+		FetchEditsLogResponse response = null;
+		JSONArray fecthedEditLog = new JSONArray();
+
+		FSEditlog fsEditlog = namesystem.getEditlog();
+		List<String> editlog = fsEditlog.getFlushedTxid();
+
+		if (editlog.isEmpty()) {
+			if (backupSyncTxid != 0) {
+				// 清理掉上次的缓存
+				currentBufferedEditsLog.clear();
+
+				// 拉取缓存中的数据
+				String[] bufferedEditsLog = fsEditlog.getBufferedEditsLog();
+				for (String log : bufferedEditsLog) {
+					currentBufferedEditsLog.add(JSONObject.parseObject(log));
+				}
+
+				int fetchCount = 0;
+				for (int i = 0; i < currentBufferedEditsLog.size(); i++) {
+					if (currentBufferedEditsLog.getJSONObject(i).getLong("txid") > backupSyncTxid) {
+						fecthedEditLog.add(currentBufferedEditsLog.getJSONObject(i));
+						backupSyncTxid = currentBufferedEditsLog.getJSONObject(i).getLong("txid");
+						fetchCount++;
+					}
+					if (fetchCount == backupSyncTxid) {
+						break;
+					}
+				}
+			} else {
+				// 此时数据全在内存缓冲中
+				String[] bufferedEditsLog = fsEditlog.getBufferedEditsLog();
+				for (String log : bufferedEditsLog) {
+					currentBufferedEditsLog.add(JSONObject.parseObject(log));
+				}
+
+				// 从内存缓冲中的数据获取
+				int fetchSize = Math.min(BACKUP_NODE_FETCH_SIZE, currentBufferedEditsLog.size());
+				for (int i = 0; i < fetchSize; i++) {
+					fecthedEditLog.add(currentBufferedEditsLog.getJSONObject(i));
+					backupSyncTxid = currentBufferedEditsLog.getJSONObject(i).getLong("txid");
+				}
+			}
+		}
+		response = FetchEditsLogResponse.newBuilder().setEditsLog(fecthedEditLog.toJSONString()).build();
+		responseObserver.onNext(response);
+		responseObserver.onCompleted();
 
 	}
 
