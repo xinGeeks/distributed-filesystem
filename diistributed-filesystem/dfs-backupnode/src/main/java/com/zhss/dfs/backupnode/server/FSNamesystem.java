@@ -7,10 +7,6 @@ package com.zhss.dfs.backupnode.server;
  */
 public class FSNamesystem {
 
-	/**
-	 * 负责管理内存文件目录树的组件
-	 */
-	// 这个组件，就是专门负责维护内存中的文件目录树的
 	private FSDirectory directory;
 	
 	public FSNamesystem() {

@@ -1,34 +1,41 @@
 package com.zhss.dfs.backupnode.server;
 
 /**
- * @author SemperFi
- * @Title: null.java
- * @Package diistributed-filesystem
- * @Description:
- * @date 2021-11-14 17:32
+ * 负责同步editslog的进程
+ * @author zhonghuashishan
+ *
  */
 public class BackupNode {
 
-    private volatile Boolean isRunning = true;
-
-    public static void main(String[] args) throws InterruptedException {
-        BackupNode backupNode = new BackupNode();
-        backupNode.start();
-    }
-
-    public void start() throws InterruptedException {
-        EditsLogFetcher editsLogFetcher = new EditsLogFetcher(this);
-        editsLogFetcher.start();
-    }
-
-    public void run() throws InterruptedException {
-        while (isRunning) {
-            Thread.sleep(1000);
-        }
-    }
-
-    public Boolean isRunning(){
-        return isRunning;
-    }
-
+	private volatile Boolean isRunning = true;
+	private FSNamesystem namesystem;
+	
+	public static void main(String[] args) throws Exception {
+		BackupNode backupNode = new BackupNode();
+		backupNode.init();  
+		backupNode.start();
+	}
+	
+	public void init() {
+		this.namesystem = new FSNamesystem();
+	}
+	
+	public void start() throws Exception {
+		EditsLogFetcher editsLogFetcher = new EditsLogFetcher(this, namesystem);   
+		editsLogFetcher.start();
+		
+		FSImageCheckpointer fsimageCheckpointer = new FSImageCheckpointer(this, namesystem); 
+		fsimageCheckpointer.start();
+	}
+	
+	public void run() throws Exception {
+		while(isRunning) {
+			Thread.sleep(1000);  
+		}  
+	}
+	
+	public Boolean isRunning() {
+		return isRunning;
+	}
+	
 }
