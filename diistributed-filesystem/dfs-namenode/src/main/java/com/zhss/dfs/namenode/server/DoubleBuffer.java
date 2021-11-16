@@ -8,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 内存双缓冲
@@ -36,7 +37,7 @@ public class DoubleBuffer {
 	/**
 	 * 已经输入磁盘中的txid范围
 	 */
-	private List<String> flushedTxids = new ArrayList<String>();
+	private List<String> flushedTxids = new CopyOnWriteArrayList<>();
 	
 	/**
 	 * 将edits log写到内存缓冲里去
